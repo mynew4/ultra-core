@@ -169,32 +169,6 @@ else()
 endif()
 
 # For Unix systems set the rpath so that libraries are found
-set(CMAKE_INSTALL_RPATH ${LIBS_DIR})
-set(CMAKE_INSTALL_NAME_DIR ${LIBS_DIR})
-# Run out of build tree
-set(CMAKE_BUILD_WITH_INSTALL_RPATH OFF)
-
-# Find needed packages and if necessery abort if something important is missing
-unset(ACE_INCLUDE_DIR CACHE)
-unset(ACE_LIBRARIES CACHE)
-unset(ACE_LIBRARIES_DIR CACHE)
-unset(ACE_INCLUDE_DIR)
-unset(ACE_LIBRARIES)
-unset(ACE_LIBRARIES_DIR)
-if(ACE_USE_EXTERNAL)
-  find_package(ACE)
-  if(NOT ACE_FOUND)
-    message(FATAL_ERROR
-      "This project requires ACE installed when ACE_USE_EXTERNAL is set. Please download the ACE Micro Release Kit from http://download.dre.vanderbilt.edu/ and install it. If this script didn't find ACE and it was correctly installed please set ACE_ROOT to the correct path."
-    )
-  endif()
-  if(EXISTS ${ACE_INCLUDE_DIR}/ace/Stack_Trace.h)
-    set(HAVE_ACE_STACK_TRACE_H ON) # config.h.cmake
-  endif()
-else()
-  include(cmake/ImportACE.cmake)
-endif()
-
 unset(TBB_INCLUDE_DIR CACHE)
 unset(TBB_LIBRARIES CACHE)
 unset(TBB_LIBRARIES_DIR CACHE)
@@ -228,6 +202,7 @@ if(UNIX)
   find_package(Readline REQUIRED)
   find_package(MySQL REQUIRED)
   find_package(ZLIB REQUIRED)
+  find_package(ACE REQUIRED)
 endif()
 
 # Add uninstall script and target
